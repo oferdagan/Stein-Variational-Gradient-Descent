@@ -1,5 +1,7 @@
 import numpy as np
 from scipy.spatial.distance import pdist, squareform
+import matplotlib.pyplot as plt
+
 
 class SVGD():
 
@@ -36,7 +38,7 @@ class SVGD():
         historical_grad = 0
         for iter in range(n_iter):
             if debug and (iter+1) % 1000 == 0:
-                print 'iter ' + str(iter+1) 
+                print('iter ' + str(iter+1) )
             
             lnpgrad = lnprob(theta)
             # calculating the kernel matrix
@@ -49,7 +51,12 @@ class SVGD():
             else:
                 historical_grad = alpha * historical_grad + (1 - alpha) * (grad_theta ** 2)
             adj_grad = np.divide(grad_theta, fudge_factor+np.sqrt(historical_grad))
-            theta = theta + stepsize * adj_grad 
+            theta = theta + stepsize * adj_grad
+
+            print("svgd iter",iter, ": ", np.mean(theta,axis=0))
+
+            # plt.scatter(theta[:, 0], theta[:, 1], color='red', label='Random Points', alpha=0.7)
+            # plt.show()
             
         return theta
     
